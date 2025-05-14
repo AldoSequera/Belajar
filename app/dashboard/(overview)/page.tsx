@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 import { 
   RevenueChartSkeleton,
   LatestInvoicesSkeleton,
-  CardSkeleton,
+  CardsSkeleton,
 } from '@/app/ui/skeletons';
 
 export default async function DashboardPage() {
@@ -17,7 +17,7 @@ export default async function DashboardPage() {
       </h1>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <Suspense fallback={<CardSkeleton />}>
+        <Suspense fallback={<CardsSkeleton />}>
           <CardWrappper />
         </Suspense>
       </div>
@@ -28,6 +28,7 @@ export default async function DashboardPage() {
             <RevenueChart />
           </Suspense>
         </div>
+        
         <div className="lg:col-span-3 md:col-span-4">
           <Suspense fallback={<LatestInvoicesSkeleton />}>
             <LatestInvoices />
