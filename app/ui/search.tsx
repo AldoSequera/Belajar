@@ -1,12 +1,23 @@
 'use client';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { URLSearchParams } from 'next/dist/compiled/@edge-runtime/primitives/url';
+import { useSearchParams } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function Search({ placeholder }: { placeholder: string }) {
-  function handleSearch(term: string) {
-    // Buat fungsi handleSearch
-    console.log(term);
-  }
+  const searchParams = useSearchParams();
+  const handleSearch = useDebouncedCallback((term) => {
+    console.log(`Searching... ${term}`);
+      
+    const params = new URLSearchParams(searchParams);
+    if(term) {
+      params.set('query', term);
+    } else{
+      params.delete('query');
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }, 300);
 
   return (
     <div className="relative flex flex-1 flex-shrink-0">
@@ -17,10 +28,8 @@ export default function Search({ placeholder }: { placeholder: string }) {
       <input
         className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 pr-3 text-sm outline-2 placeholder:text-gray-500"
         placeholder={placeholder}
-        onChange={(e) => {
-          // Tambahkan properti onChange
-          handleSearch(e.target.value);
-        }}
+        onChange={(e) => {handleSearch(e.target.value); }}
+        defaultValue={searchParams.get('query')?.toString()}
       />
 
       <MagnifyingGlassIcon
